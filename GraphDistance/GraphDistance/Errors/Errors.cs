@@ -23,7 +23,7 @@
             public static string CANNOT_READ_SIZE = "Cannot read graph size.";
             public static string FILE_EXTENSION_NOT_TXT = "File extension is not '.txt'.";
             public static string INVALID_PATH = "Invalid file path.";
-            public static string MATRIX_NOT_BINARY = "Graph adjacency matrix is not square matrix.";
+            public static string MATRIX_NOT_BINARY = "Graph adjacency matrix is not binary matrix.";
             public static string MATRIX_NOT_SQUARE = "Graph adjacency matrix is not square matrix.";
         }
     }
