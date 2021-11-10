@@ -1,4 +1,4 @@
-namespace graph_distance
+namespace GraphDistance
 {
     public interface IDistanceFinder
     {
