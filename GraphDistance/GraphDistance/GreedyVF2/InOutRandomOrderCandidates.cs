@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,41 +7,33 @@ namespace GraphDistance.GreedyVF2
     internal class InOutRandomOrderCandidates : ICandidatesFinder
     {
         private SubgraphCandidates graph1Candidates, graph2Candidates;
+        private Random random;
 
         public InOutRandomOrderCandidates(MeasuredGraphs graphs)
         {
             graph1Candidates = new SubgraphCandidates(graphs.Graph1);
             graph2Candidates = new SubgraphCandidates(graphs.Graph2);
+            random = new Random();
         }
 
         public IEnumerable<(int, int)> FindCandidates()
         {
-            if (graph1Candidates.OutNeighbours.Count != 0 && graph2Candidates.OutNeighbours.Count != 0)
+            var CandidatesPairOrderedSet = new (HashSet<int>, HashSet<int>)[]
             {
-                var out2Candidate = graph2Candidates.OutNeighbours.First();
-                foreach (var graph1OutCandidate in graph1Candidates.OutNeighbours)
-                {
-                    yield return (graph1OutCandidate, out2Candidate);
-                }
-            }
-
-
-            if (graph1Candidates.InNeighbours.Count != 0 && graph2Candidates.InNeighbours.Count != 0)
+                (graph1Candidates.OutNeighbours, graph2Candidates.OutNeighbours),
+                (graph1Candidates.InNeighbours, graph2Candidates.InNeighbours),
+                (graph1Candidates.Remaining, graph2Candidates.Remaining),
+            };
+            
+            foreach (var nodesPairsSpace in CandidatesPairOrderedSet)
             {
-                var in2Candidate = graph2Candidates.InNeighbours.First();
-                foreach (var graph1InCandidate in graph1Candidates.InNeighbours)
+                if (nodesPairsSpace.Item1.Count != 0 && nodesPairsSpace.Item2.Count != 0)
                 {
-                    yield return (graph1InCandidate, in2Candidate);
-                }
-            }
-
-
-            if (graph1Candidates.Remaining.Count != 0 && graph2Candidates.Remaining.Count != 0)
-            {
-                var remaining2Candidate = graph2Candidates.Remaining.First();
-                foreach (var graph1RemainingCandidate in graph1Candidates.Remaining)
-                {
-                    yield return (graph1RemainingCandidate, remaining2Candidate);
+                    var secondSetCandidate = nodesPairsSpace.Item2.Skip(random.Next(nodesPairsSpace.Item2.Count - 1)).First();
+                    foreach (var firstSetCandidate in nodesPairsSpace.Item1)
+                    {
+                        yield return (firstSetCandidate, secondSetCandidate);
+                    }
                 }
             }
         }
