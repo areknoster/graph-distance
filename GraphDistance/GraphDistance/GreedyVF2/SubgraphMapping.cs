@@ -14,6 +14,11 @@ namespace GraphDistance.GreedyVF2
 
         public bool TryAddPair((int, int) matchToCheck)
         {
+            if (graphs.Graph1[matchToCheck.Item1, matchToCheck.Item1] !=
+                graphs.Graph2[matchToCheck.Item2, matchToCheck.Item2])  return false;
+            
+               
+            
             foreach (var match in this)
             {
                 if (
