@@ -13,8 +13,12 @@
         {
             public static string INVALIDE_GRAPH_SIZE_OR_MATRIX = "Invalid graph size or adjacency matrix.";
             public static string NEGATIVE_SIZE = "Graph size cannot be negative.";
-            public static string SUBGRAPH_CREATING_INVALID_NODE_LABEL = "Creating subraph: invalid node label detected.";
-            public static string SUBGRAPH_CREATING_NODE_LABELS_NOT_UNIQUE = "Creating subraph: node labels are not unique.";
+
+            public static string SUBGRAPH_CREATING_INVALID_NODE_LABEL =
+                "Creating subraph: invalid node label detected.";
+
+            public static string SUBGRAPH_CREATING_NODE_LABELS_NOT_UNIQUE =
+                "Creating subraph: node labels are not unique.";
         }
 
         public static class GraphFile

@@ -9,8 +9,15 @@ namespace GraphDistance
         private readonly int size;
         private readonly AdjacencyMatrix adjacencyMatrix;
 
-        public int Size { get { return size; } }
-        public bool[,] AdjacencyMatrix { get { return adjacencyMatrix.Values; } }
+        public int Size
+        {
+            get { return size; }
+        }
+
+        public bool[,] AdjacencyMatrix
+        {
+            get { return adjacencyMatrix.Values; }
+        }
 
         public Graph(int size)
         {
@@ -100,6 +107,7 @@ namespace GraphDistance
             {
                 throw new ArgumentException(Errors.Graph.SUBGRAPH_CREATING_INVALID_NODE_LABEL);
             }
+
             if (nodes.Distinct().Count() != nodes.Count)
             {
                 throw new ArgumentException(Errors.Graph.SUBGRAPH_CREATING_NODE_LABELS_NOT_UNIQUE);
