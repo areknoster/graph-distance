@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphDistance.GreedyVF2
+namespace GraphDistance.Algorithms.GreedyVF2
 {
     internal class InOutRandomOrderCandidates : ICandidatesFinder
     {

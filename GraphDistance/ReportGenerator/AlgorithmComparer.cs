@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace GraphDistance
@@ -32,16 +28,21 @@ namespace GraphDistance
             }
         }
 
-        private Result Run(IDistanceFinder distanceFinder ,Graph graph1, Graph graph2)
+        private Result Run(IDistanceFinder distanceFinder, Graph graph1, Graph graph2)
         {
             try
             {
                 var sw = System.Diagnostics.Stopwatch.StartNew();
                 double distance = -1;
                 var task = Task.Run(() => distance = distanceFinder.FindDistance(graph1, graph2));
+
                 if (!task.Wait(Timeout))
+                {
                     return new Timeout(Timeout);
+                }
+
                 sw.Stop();
+
                 return new Success(sw.Elapsed, distance);
             }
             catch (Exception e)
@@ -78,6 +79,7 @@ namespace GraphDistance
     internal class Timeout : Result
     {
         private TimeSpan Elapsed;
+
         public Timeout(TimeSpan elapsed) : base() => Elapsed = elapsed;
         public override string ToString() => $"Result=Timeout After={Elapsed}";
     }

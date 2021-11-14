@@ -14,24 +14,31 @@ namespace GraphDistance.Tests
         private readonly int validSize = 3;
         private readonly bool[,] validSizeEmptyMatrix = new bool[3, 3];
 
-        private readonly bool[,] invalidMatrix =
-            new bool[2, 3] { { false, true, false },
-                             { true, false, true } };
+        private readonly bool[,] invalidMatrix = new bool[2, 3]
+        {
+            { false, true, false },
+            { true, false, true },
+        };
 
-        private readonly bool[,] validMatrix =
-            new bool[3, 3] { { false, true, false },
-                             { true, false, true },
-                             { true, false, false } };
+        private readonly bool[,] validMatrix = new bool[3, 3]
+        {
+            { false, true, false },
+            { true, false, true },
+            { true, false, false },
+        };
 
-        private readonly bool[,] validMatrixAfterSwappingNodesLabels =
-            new bool[3, 3] { { false, false, true },
-                             { true, false, false },
-                             { true, true, false } };
+        private readonly bool[,] validMatrixAfterSwappingNodesLabels = new bool[3, 3]
+        {
+            { false, false, true },
+            { true, false, false },
+            { true, true, false },
+        };
 
         [Fact(DisplayName = "Constructor with negative size")]
         public void AdjacencyMatrixTest11()
         {
-            var exception = Assert.Throws<ArgumentException>(() => { AdjacencyMatrix adjacencyMatrix = new(negativeSize); });
+            var exception = Assert.Throws<ArgumentException>(
+                () => { AdjacencyMatrix adjacencyMatrix = new(negativeSize); });
             Assert.Equal(Errors.AdjacencyMatrix.NEGATIVE_SIZE, exception.Message);
         }
 
@@ -52,7 +59,8 @@ namespace GraphDistance.Tests
         [Fact(DisplayName = "Constructor with invalid matrix")]
         public void AdjacencyMatrixTest21()
         {
-            var exception = Assert.Throws<ArgumentException>(() => { AdjacencyMatrix adjacencyMatrix = new(invalidMatrix); });
+            var exception = Assert.Throws<ArgumentException>(
+                () => { AdjacencyMatrix adjacencyMatrix = new(invalidMatrix); });
             Assert.Equal(Errors.AdjacencyMatrix.DIMENSIONS_NOT_EQUAL, exception.Message);
         }
 
@@ -67,7 +75,8 @@ namespace GraphDistance.Tests
         public void SwapNodesLabelsTest1()
         {
             AdjacencyMatrix adjacencyMatrix = new(validMatrix);
-            var exception = Assert.Throws<ArgumentException>(() => { adjacencyMatrix.SwapNodesLabels(2, 3); });
+            var exception = Assert.Throws<ArgumentException>(
+                () => { adjacencyMatrix.SwapNodesLabels(2, 3); });
             Assert.Equal(Errors.AdjacencyMatrix.INVALID_NODE_LABEL, exception.Message);
         }
 
@@ -83,7 +92,8 @@ namespace GraphDistance.Tests
         public void GetSourcesOfIncomingEdgesNodesTest1()
         {
             AdjacencyMatrix adjacencyMatrix = new(validMatrix);
-            var exception = Assert.Throws<ArgumentException>(() => { var result = adjacencyMatrix.GetTargetsOfOutgoingEdges(3); });
+            var exception = Assert.Throws<ArgumentException>(
+                () => { var result = adjacencyMatrix.GetTargetsOfOutgoingEdges(3); });
             Assert.Equal(Errors.AdjacencyMatrix.INVALID_NODE_LABEL, exception.Message);
         }
 
@@ -99,7 +109,8 @@ namespace GraphDistance.Tests
         public void GetTargetsOfOutgoingEdgesNodesTest1()
         {
             AdjacencyMatrix adjacencyMatrix = new(validMatrix);
-            var exception = Assert.Throws<ArgumentException>(() => { var result = adjacencyMatrix.GetTargetsOfOutgoingEdges(3); });
+            var exception = Assert.Throws<ArgumentException>(
+                () => { var result = adjacencyMatrix.GetTargetsOfOutgoingEdges(3); });
             Assert.Equal(Errors.AdjacencyMatrix.INVALID_NODE_LABEL, exception.Message);
         }
 

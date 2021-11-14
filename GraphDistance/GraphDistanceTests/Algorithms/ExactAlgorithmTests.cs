@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GraphDistance.ExactAlgorithm;
+using GraphDistance.Algorithms.Exact;
 using Xunit;
 
 namespace GraphDistance.GraphDistanceTests.Algorithms
@@ -48,6 +48,30 @@ namespace GraphDistance.GraphDistanceTests.Algorithms
                     .SwapLabels(2, 6)
                     .SwapLabels(3, 7)
                     .SwapLabels(5, 8),
+                5
+            },
+            new object[]
+            {
+                ExampleGraphs.RandomV10
+                    .SwapLabels(1, 5)
+                    .SwapLabels(2, 6)
+                    .SwapLabels(3, 8),
+                ExampleGraphs.RandomV10Subgraph5WithExtraV6
+                    .SwapLabels(0, 2)
+                    .SwapLabels(1, 4)
+                    .SwapLabels(3, 5),
+                5
+            },
+            new object[]
+            {
+                ExampleGraphs.RandomV10Subgraph5WithExtraV6
+                    .SwapLabels(0, 2)
+                    .SwapLabels(1, 4)
+                    .SwapLabels(3, 5),
+                ExampleGraphs.RandomV10
+                    .SwapLabels(1, 5)
+                    .SwapLabels(2, 6)
+                    .SwapLabels(3, 8),
                 5
             },
         };

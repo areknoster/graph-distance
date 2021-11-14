@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GraphDistance.GreedyVF2
+namespace GraphDistance.Algorithms.GreedyVF2
 {
     internal interface ICandidatesFinder
     {

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 
-namespace GraphDistance.GreedyVF2
+namespace GraphDistance.Algorithms.GreedyVF2
 {
     internal class SubgraphMapping : List<(int, int)>
     {
@@ -15,19 +14,17 @@ namespace GraphDistance.GreedyVF2
         public bool TryAddPair((int, int) matchToCheck)
         {
             if (graphs.Graph1[matchToCheck.Item1, matchToCheck.Item1] !=
-                graphs.Graph2[matchToCheck.Item2, matchToCheck.Item2])  return false;
-            
-               
-            
+                graphs.Graph2[matchToCheck.Item2, matchToCheck.Item2]) 
+            {
+                return false;
+            }
+
             foreach (var match in this)
             {
-                if (
-                    (graphs.Graph1[match.Item1, matchToCheck.Item1] !=
-                     graphs.Graph2[match.Item2, matchToCheck.Item2])
-                    ||
-                    (graphs.Graph1[matchToCheck.Item1, match.Item1] !=
-                     graphs.Graph2[matchToCheck.Item2, match.Item2])
-                )
+                if ((graphs.Graph1[match.Item1, matchToCheck.Item1] !=
+                    graphs.Graph2[match.Item2, matchToCheck.Item2])
+                    || (graphs.Graph1[matchToCheck.Item1, match.Item1] !=
+                    graphs.Graph2[matchToCheck.Item2, match.Item2]))
                 {
                     return false;
                 }

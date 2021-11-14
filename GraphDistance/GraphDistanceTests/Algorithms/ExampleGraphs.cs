@@ -101,5 +101,15 @@ namespace GraphDistance.GraphDistanceTests.Algorithms
             { 1, 0, 1, 1, 0 },
             { 0, 1, 0, 0, 1 },
         };
+
+        public static readonly int[,] RandomV10Subgraph5WithExtraV6 = new int[6, 6]
+        {
+            { 1, 1, 0, 1, 1, 1 },
+            { 1, 1, 1, 0, 1, 1 },
+            { 0, 0, 0, 1, 0, 1 },
+            { 1, 0, 1, 1, 0, 1 },
+            { 0, 1, 0, 0, 1, 1 },
+            { 1, 1, 1, 1, 1, 1 },
+        };
     }
 }
