@@ -1,5 +1,6 @@
 ﻿using System;
 using GraphDistance.ExactAlgorithm;
+using GraphDistance.GreedyVF2;
 
 namespace GraphDistance
 {
@@ -11,36 +12,34 @@ namespace GraphDistance
 
         private static void Main(string[] args)
         {
-            try
-            {
-                Console.WriteLine(path + "Graph_Size_3.txt");
-                var graph_3 = GraphFile.Read(path + "Graph_Size_3.txt");
-                var graph_4 = GraphFile.Read(path + "Graph_Size_4.txt");
-                var graph_5 = GraphFile.Read(path + "Graph_Size_5.txt");
-                var graph_6 = GraphFile.Read(path + "Graph_Size_6.txt");
-                var graph_7 = GraphFile.Read(path + "Graph_Size_7.txt");
+            var comparer = new DistancesComparer(
+                new ExactDistanceFinder(),
+                GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates()
+            );
 
-                var exact = new ExactDistanceFinder();
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_3, graph_3));
+            var graph_3 = GraphFile.Read(path + "Graph_Size_3.txt");
+            var graph_4 = GraphFile.Read(path + "Graph_Size_4.txt");
+            var graph_5 = GraphFile.Read(path + "Graph_Size_5.txt");
+            var graph_6 = GraphFile.Read(path + "Graph_Size_6.txt");
+            var graph_7 = GraphFile.Read(path + "Graph_Size_7.txt");
+            var graph_9 = GraphFile.Read(path + "Graph_Size_9.txt");
+            var graph_10 = GraphFile.Read(path + "Graph_Size_10.txt");
+            var graph_15 = GraphFile.Read(path + "Graph_Size_15.txt");
 
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_3, graph_4));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_4, graph_3));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_3, graph_6));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_6, graph_3));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_5, graph_6));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_6, graph_5));
-
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_3, graph_7));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_7, graph_3));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_4, graph_7));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_7, graph_4));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_7, graph_6));
-                Console.WriteLine("Exact distance: " + exact.FindDistance(graph_6, graph_7));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            comparer.FindDistances(graph_3, graph_3);
+            comparer.FindDistances(graph_3, graph_4);
+            comparer.FindDistances(graph_4, graph_3);
+            comparer.FindDistances(graph_3, graph_6);
+            comparer.FindDistances(graph_6, graph_3);
+            comparer.FindDistances(graph_5, graph_6);
+            comparer.FindDistances(graph_6, graph_5);
+            comparer.FindDistances(graph_3, graph_7);
+            comparer.FindDistances(graph_7, graph_3);
+            comparer.FindDistances(graph_4, graph_7);
+            comparer.FindDistances(graph_7, graph_4);
+            comparer.FindDistances(graph_7, graph_6);
+            comparer.FindDistances(graph_6, graph_7);
+            comparer.FindDistances(graph_9, graph_10);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace GraphDistance
             {
                 throw new ArgumentException(Errors.GraphFile.INVALID_PATH);
             }
+
             if (Path.GetExtension(filePath) != ".txt")
             {
                 throw new ArgumentException(Errors.GraphFile.FILE_EXTENSION_NOT_TXT);
@@ -71,6 +72,7 @@ namespace GraphDistance
                     {
                         throw new Exception(Errors.GraphFile.CANNOT_READ_MATRIX);
                     }
+
                     if (value != 0 && value != 1)
                     {
                         throw new Exception(Errors.GraphFile.MATRIX_NOT_BINARY);
@@ -92,7 +94,7 @@ namespace GraphDistance
                 for (int i = 0; i < graph.AdjacencyMatrix.GetLength(0); i++)
                 {
                     string line = string.Join(" ", Enumerable.Range(0, graph.AdjacencyMatrix.GetLength(1))
-                                                             .Select(j => Convert.ToInt32(graph[i, j])));
+                        .Select(j => Convert.ToInt32(graph[i, j])));
                     file.WriteLine(line);
                 }
 

@@ -8,7 +8,10 @@ namespace GraphDistance
     {
         private readonly bool[,] values;
 
-        public bool[,] Values { get { return values; } }
+        public bool[,] Values
+        {
+            get { return values; }
+        }
 
         public AdjacencyMatrix(int size)
         {
@@ -93,6 +96,7 @@ namespace GraphDistance
                 {
                     Console.Write($"{Convert.ToInt32(this[i, j])} ");
                 }
+
                 Console.Write("\n");
             }
         }
