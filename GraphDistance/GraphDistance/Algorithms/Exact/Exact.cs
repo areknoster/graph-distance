@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphDistance.ExactAlgorithm
+namespace GraphDistance.Algorithms.Exact
 {
     public class ExactDistanceFinder : IDistanceFinder
     {
+        public string Name => "ExactDistanceFinder";
+
         public double FindDistance(Graph graph1, Graph graph2)
         {
             var mcsVertices = GetMCSVertices(graph1, graph2, 0, new());
@@ -13,8 +15,6 @@ namespace GraphDistance.ExactAlgorithm
 
             return 1.0 - (double) mcsVertices.Count / (double) Math.Max(graph1.Size, graph2.Size);
         }
-
-        public string Name => "ExactDistanceFinder";
 
         private List<int> GetMCSVertices(
             Graph graph1,

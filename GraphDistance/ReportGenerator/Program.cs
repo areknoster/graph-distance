@@ -1,13 +1,11 @@
 ﻿using System;
-using GraphDistance.ExactAlgorithm;
-using GraphDistance.GreedyVF2;
+using GraphDistance.Algorithms.Exact;
+using GraphDistance.Algorithms.GreedyVF2;
 
 namespace GraphDistance
 {
     internal class Program
     {
-        private static readonly string fileToReadGraph = "../../../GraphFileTests/TestReadGraph.txt";
-        private static readonly string fileToWriteGraph = "../../../GraphFileTests/TestWriteGraph.txt";
         public static string path = $"../../../GraphFileTests/";
 
         private static void Main(string[] args)
@@ -17,8 +15,7 @@ namespace GraphDistance
                 new ExactDistanceFinder(),
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(),
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 10),
-            GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 500)
-            );
+                GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 500));
 
             var graph_3 = GraphFile.Read(path + "Graph_Size_3.txt");
             var graph_4 = GraphFile.Read(path + "Graph_Size_4.txt");

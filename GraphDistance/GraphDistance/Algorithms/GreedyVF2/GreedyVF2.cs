@@ -2,25 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphDistance.GreedyVF2
+namespace GraphDistance.Algorithms.GreedyVF2
 {
     public class GreedyVf2 : IDistanceFinder
     {
         public static GreedyVf2 CreateGreedyVf2WithInOutRandomCandidates(int attempts = 1)
         {
-            return new($"GreedyVf2WithInOutRandomCandidates{attempts}Attempts",  attempts, new InOutRandomOrderCandidatesFactory());
+            return new(
+                $"GreedyVf2WithInOutRandomCandidates{attempts}Attempts",
+                attempts,
+                new InOutRandomOrderCandidatesFactory());
         }
 
         private readonly CandidatesFinderFactory candidatesFinderFactory;
         private readonly int attempts;
 
-        private GreedyVf2(string name, int attempts,CandidatesFinderFactory candidatesFinderFactory)
+        private GreedyVf2(string name, int attempts, CandidatesFinderFactory candidatesFinderFactory)
         {
             this.attempts = attempts < 1 ? 1 : attempts;
             this.candidatesFinderFactory = candidatesFinderFactory;
             this.Name = name;
         }
-
 
         public double FindDistance(Graph graph1, Graph graph2)
         {
@@ -34,8 +36,8 @@ namespace GraphDistance.GreedyVF2
                     maxMapping = mapping;
                 }
             }
-            graph1.GetInducedSubgraph(maxMapping.Select((t) => t.Item1).ToList()).Print();
 
+            graph1.GetInducedSubgraph(maxMapping.Select((t) => t.Item1).ToList()).Print();
 
             return 1.0 - (double) maxMapping.Count / (double) Math.Max(graph1.Size, graph2.Size);
         }
