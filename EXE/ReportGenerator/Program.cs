@@ -6,7 +6,7 @@ namespace GraphDistance
 {
     internal class Program
     {
-        public static string path = $"../../../../../../Examples/";
+        public static string path = $"../../../../../Examples/";
 
         private static void Main(string[] args)
         {
