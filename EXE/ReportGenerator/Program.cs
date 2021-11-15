@@ -17,6 +17,36 @@ namespace GraphDistance
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 10),
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 500));
 
+            ShowMenu(comparer);
+
+            Console.ReadLine();
+        }
+
+        private static void ShowMenu(AlgorithmsComparer comparer)
+        {
+            Console.WriteLine("=================");
+            Console.WriteLine("Graph distance");
+            Console.WriteLine("=================");
+            Console.WriteLine("Select mode:");
+            Console.WriteLine("1 - your own data");
+            Console.WriteLine("2 - example data");
+            var input = Console.ReadLine();
+            if (input == "1")
+            {
+                CalculateOwnData(comparer);
+            }
+            else if (input == "2")
+            {
+                CalculateExamples(comparer);
+            }
+            else
+            {
+                Console.WriteLine("Invalid mode");
+            }
+        }
+
+        private static void CalculateExamples(AlgorithmsComparer comparer)
+        {
             var graph_3 = GraphFile.Read(path + "Graph_Size_3.txt");
             var graph_4 = GraphFile.Read(path + "Graph_Size_4.txt");
             var graph_5 = GraphFile.Read(path + "Graph_Size_5.txt");
@@ -44,6 +74,25 @@ namespace GraphDistance
             comparer.FindDistances(graph_9, graph_10);
             comparer.FindDistances(graph_10, graph_15);
             comparer.FindDistances(graph_35, graph_40);
+        }
+
+        private static void CalculateOwnData(AlgorithmsComparer comparer)
+        {
+            Console.WriteLine("Type first graph file absolute path:");
+            var absolutePath1 = Console.ReadLine();
+            Console.WriteLine("Type second graph file absolute path:");
+            var absolutePath2 = Console.ReadLine();
+
+            try
+            {
+                var graph_1 = GraphFile.Read(absolutePath1);
+                var graph_2 = GraphFile.Read(absolutePath2);
+                comparer.FindDistances(graph_1, graph_2);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
