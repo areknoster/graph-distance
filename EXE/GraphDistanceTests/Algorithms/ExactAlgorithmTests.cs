@@ -76,8 +76,65 @@ namespace GraphDistance.GraphDistanceTests.Algorithms
             },
         };
 
+        public static IEnumerable<object[]> FindDistanceDataFromExamples => new List<object[]>
+        {
+            // 01.G5_G5_subgraph5_the-same-graphs
+            new object[] { GraphsFromExamples.G5, GraphsFromExamples.G5, 5 },
+            // 02.G5_G5_subgraph5_the-same-graphs-with-swapped-verticles
+            new object[] { GraphsFromExamples.G5, GraphsFromExamples.G5_swapped, 5 },
+            // 03.G5_G5_subgraph4
+            new object[] { GraphsFromExamples.G5, GraphsFromExamples.G5_1Vdifferent, 4 },
+            // 04.G5_G5_subgraph3
+            new object[] { GraphsFromExamples.G5, GraphsFromExamples.G5_2Vdifferent, 3 },
+            // 05.G5_G5_subgraph1
+            new object[] { GraphsFromExamples.G5, GraphsFromExamples.G5_4Vdifferent, 1 },
+            // 06.G5_G7_two-extra-isolated-v
+            new object[] { GraphsFromExamples.G5, GraphsFromExamples.G7_with_2_extra_isolated, 5 },
+            // 07.G8_G5_subgraph5
+            new object[] { GraphsFromExamples.G8, GraphsFromExamples.G5, 5 },
+            // 08.G8_G5_subgraph5-with-swapped-verticles
+            new object[] { GraphsFromExamples.G8, GraphsFromExamples.G5_swapped, 5 },
+            // 09.G8_G5_subgraph4
+            new object[] { GraphsFromExamples.G8, GraphsFromExamples.G5_1Vdifferent, 4 },
+            // 10.C5_C5_both-directed
+            new object[] { GraphsFromExamples.C5directed, GraphsFromExamples.C5directed, 5 },
+            // 11.C5_C6_both-directed
+            new object[] { GraphsFromExamples.C5directed, GraphsFromExamples.C6directed, 4 },
+            // 12.C5_C5_both-undirected
+            new object[] { GraphsFromExamples.C5undirected, GraphsFromExamples.C5undirected, 5 },
+            // 13.C5_C6_both-undirected
+            new object[] { GraphsFromExamples.C5undirected, GraphsFromExamples.C6undirected, 4 },
+            // 14.C5_C5_directed-undirected
+            new object[] { GraphsFromExamples.C5directed, GraphsFromExamples.C5undirected, 2 },
+            // 15.K5_K5
+            new object[] { GraphsFromExamples.K5, GraphsFromExamples.K5, 5 },
+            // 16.K5_K6
+            new object[] { GraphsFromExamples.K5, GraphsFromExamples.K6, 5 },
+            // 17.K5_G5_isolated
+            new object[] { GraphsFromExamples.K5, GraphsFromExamples.G5_isolated, 1 },
+            // 18.G5_G6_both_isolated
+            new object[] { GraphsFromExamples.G5_isolated, GraphsFromExamples.G6_isolated, 5 },
+            // 19.G5_G5_with_and_without_loops
+            new object[] { GraphsFromExamples.G5_with_loops, GraphsFromExamples.G5_without_loops, 0 },
+        };
+
         [Theory, MemberData(nameof(FindDistanceData))]
         public void Exact_tests(int[,] matrix1, int[,] matrix2, int mcsCount)
+        {
+            var distanceFinder = new ExactDistanceFinder();
+
+            var distance = distanceFinder.FindDistance(
+                CreateGraphFromMatrix(matrix1),
+                CreateGraphFromMatrix(matrix2));
+
+            var expectedDistance = 1.0 - (double) mcsCount
+                / (double) Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
+
+            Assert.Equal(expectedDistance, distance);
+        }
+
+        [Theory, MemberData(nameof(FindDistanceDataFromExamples))]
+        public void Exact_from_examples_tests(int[,] matrix1, int[,] matrix2, int mcsCount)
         {
             var distanceFinder = new ExactDistanceFinder();
 
