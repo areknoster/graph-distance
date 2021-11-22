@@ -19,7 +19,7 @@ namespace GraphDistance
 
         public void FindDistances(Graph graph1, Graph graph2, int algorithmNo)
         {
-            Console.WriteLine("=====================================================================================");
+            Console.WriteLine("==================================================================================================");
             Console.WriteLine($"Comparing graphs with {distanceFinders[algorithmNo].Name}");
 
             Console.WriteLine("--> First graph:");
@@ -27,11 +27,11 @@ namespace GraphDistance
             Console.WriteLine("--> Second graph:");
             graph2.Print();
 
-            Console.WriteLine("---------------------------------------------------------------------------------");
+            Console.WriteLine("-------------------------------------------------------------------------------------------------");
             var result = Run(distanceFinders[algorithmNo], graph1, graph2);
             Console.WriteLine($"{distanceFinders[algorithmNo].Name}: {result}");
 
-            Console.WriteLine("=====================================================================================");
+            Console.WriteLine("==================================================================================================");
         }
 
         private Result Run(IDistanceFinder distanceFinder, Graph graph1, Graph graph2)
