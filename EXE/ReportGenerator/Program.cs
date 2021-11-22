@@ -7,12 +7,20 @@ namespace GraphDistance
 {
     internal class Program
     {
-        public static string examplesPath = $"../../../../../Examples/";
+        public static string examplesPath = $"../Examples/";
 
         private static void Main(string[] args)
         {
+            Console.WriteLine("Type timeout (in seconds):");
+            bool success = int.TryParse(Console.ReadLine(), out int timeout);
+            if (!success || timeout <= 0)
+            {
+                Console.WriteLine("Invalid timeout.");
+                return;
+            }
+
             var comparer = new AlgorithmsComparer(
-                TimeSpan.FromSeconds(10),
+                TimeSpan.FromSeconds(timeout),
                 new ExactDistanceFinder(),
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(),
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 10),
