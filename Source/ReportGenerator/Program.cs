@@ -1,23 +1,24 @@
 ﻿using GraphDistance.Algorithms.Exact;
 using GraphDistance.Algorithms.GreedyVF2;
 using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace GraphDistance
 {
     internal class Program
     {
-        public static string examplesPath = $"../Examples/";
+        public static int timeout;
+
+        // Comment before running makeEXE.bat
+        public static string examplesPath = $"../../../../../Examples/";
+        // Uncomment before running makeEXE.bat
+        //public static string examplesPath = $"../Examples/";
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("Type timeout (in seconds):");
-            bool success = int.TryParse(Console.ReadLine(), out int timeout);
-            if (!success || timeout <= 0)
-            {
-                Console.WriteLine("Invalid timeout.");
-                return;
-            }
+            Header();
+            SetTimeout();
 
             var comparer = new AlgorithmsComparer(
                 TimeSpan.FromSeconds(timeout),
@@ -27,14 +28,38 @@ namespace GraphDistance
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 500));
 
             Start(comparer);
+            Close();
         }
 
-        private static void Start(AlgorithmsComparer comparer)
+        private static void Header()
         {
             Console.WriteLine("=================");
             Console.WriteLine("Graph distance");
             Console.WriteLine("=================");
+            Console.WriteLine();
+        }
 
+        private static void SetTimeout()
+        {
+            Console.WriteLine("Timeout is the time after which every algorithm in program will stop executing.");
+            Console.WriteLine("Type your timeout (in seconds):");
+
+            bool success = int.TryParse(Console.ReadLine(), out timeout);
+            if (!success || timeout <= 0)
+            {
+                timeout = 10;
+                Console.WriteLine($"Invalid timeout. Default timeout set to {timeout} seconds.");
+            }
+            else
+            {
+                Console.WriteLine($"Timeout set to {timeout} seconds.");
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void Start(AlgorithmsComparer comparer)
+        {
             while (true)
             {
                 switch (GetMode())
@@ -75,51 +100,33 @@ namespace GraphDistance
             try
             {
                 ConsiderExample(absolutePath, comparer);
+                Console.WriteLine();
             }
             catch (Exception e)
             {
                 Console.WriteLine();
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + " Redirecting to menu...");
                 Console.WriteLine();
             }
         }
 
         private static void CalculateExamples(AlgorithmsComparer comparer)
         {
-            var examples = new List<string>()
+            GetFilesFromExampleDirectory(out string[] examples);
+
+            if (examples == null)
             {
-                "1. G5_G5_subgraph5_the-same-graphs",
-                "2. G5_G5_subgraph5_the-same-graphs-with-swapped-verticles",
-                "3. G5_G5_subgraph4",
-                "4. G5_G5_subgraph3",
-                "5. G5_G5_subgraph1",
-                "6. G5_G7_two-extra-isolated-v",
-                "7. G8_G5_subgraph5",
-                "8. G8_G5_subgraph5-with-swapped-verticles",
-                "9. G8_G5_subgraph4",
-                "10. C5_C5_both-directed",
-                "11. C5_C6_both-directed",
-                "12. C5_C5_both-undirected",
-                "13. C5_C6_both-undirected",
-                "14. C5_C5_directed-undirected",
-                "15. K5_K5",
-                "16. K5_K6",
-                "17. K5_G5_isolated",
-                "18. G5_G6_both_isolated",
-                "19. G5_G5_with_and_without_loops",
-                "20. G9_G10_random",
-                "21. G10_G15_random",
-                "22. G35_G40_random"
-            };
+                return;
+            }
 
             try
             {
-                int exampleToConsider = GetExampleToConsider(examples.ToArray());
+                int exampleToConsider = GetExampleToConsider(examples);
 
                 while (exampleToConsider > 0)
                 {
                     ConsiderExample(examplesPath + examples[exampleToConsider - 1] + ".txt", comparer);
-                    exampleToConsider = GetExampleToConsider(examples.ToArray());
+                    exampleToConsider = GetExampleToConsider(examples);
                 }
 
                 Console.WriteLine();
@@ -129,9 +136,47 @@ namespace GraphDistance
             catch (Exception e)
             {
                 Console.WriteLine();
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + " Redirecting to menu...");
                 Console.WriteLine();
             }
+        }
+
+        private static void GetFilesFromExampleDirectory(out string[] examples)
+        {
+            try
+            {
+                examples = Directory.GetFiles(examplesPath, "*.txt")
+                   .Select(Path.GetFileNameWithoutExtension)
+                   .OrderBy(x => x)
+                   .ToArray();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error while reading example files. " + e.Message + " Redirecting to menu...");
+                Console.WriteLine();
+
+                examples = null;
+            }
+        }
+
+        private static int GetExampleToConsider(string[] examples)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Select example to consider:");
+            for (int i = 1; i <= examples.Length; i++)
+            {
+                Console.WriteLine($"{i}. {examples[i - 1]}");
+            }
+            Console.WriteLine("0. Exit examples mode");
+
+            bool success = int.TryParse(Console.ReadLine(), out int exampleToConsider);
+            if (!success || exampleToConsider < 0 || exampleToConsider > examples.Length)
+            {
+                throw new Exception("Invalid example selected.");
+            }
+
+            return exampleToConsider;
         }
 
         private static void ConsiderExample(string path, AlgorithmsComparer comparer)
@@ -147,26 +192,6 @@ namespace GraphDistance
             }
         }
 
-        private static int GetExampleToConsider(string[] examples)
-        {
-            Console.WriteLine();
-            Console.WriteLine($"Select example to consider:");
-            foreach (var example in examples)
-            {
-                Console.WriteLine(example);
-            }
-            Console.WriteLine("0. Exit examples mode");
-
-            bool success = int.TryParse(Console.ReadLine(), out int exampleToConsider);
-            if (!success || exampleToConsider < 0 || exampleToConsider > examples.Length)
-            {
-                Console.WriteLine();
-                throw new Exception("Invalid example selected. Redirecting to menu...");
-            }
-
-            return exampleToConsider;
-        }
-
         private static int GetAlgorithmNo(AlgorithmsComparer comparer)
         {
             Console.WriteLine();
@@ -180,11 +205,18 @@ namespace GraphDistance
             bool success = int.TryParse(Console.ReadLine(), out int algorithmNo);
             if (!success || algorithmNo < 0 || algorithmNo > comparer.DistanceFinders.Length)
             {
-                Console.WriteLine();
-                throw new Exception("Invalid algorithm selected. Redirecting to menu...");
+                throw new Exception("Invalid algorithm selected.");
             }
 
             return algorithmNo;
+        }
+
+        private static void Close()
+        {
+            Console.WriteLine();
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
+            Console.WriteLine();
         }
     }
 }
