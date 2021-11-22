@@ -1,12 +1,15 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GraphDistance
 {
     public class AlgorithmsComparer
     {
-        private IDistanceFinder[] distanceFinders;
-        private TimeSpan Timeout;
+        private readonly IDistanceFinder[] distanceFinders;
+        private readonly TimeSpan Timeout;
+
+        public string[] DistanceFinders { get => distanceFinders.Select(x => x.Name).ToArray(); }
 
         public AlgorithmsComparer(TimeSpan timeout, params IDistanceFinder[] distanceFinders)
         {
@@ -14,18 +17,21 @@ namespace GraphDistance
             this.distanceFinders = distanceFinders;
         }
 
-        public void FindDistances(Graph graph1, Graph graph2)
+        public void FindDistances(Graph graph1, Graph graph2, int algorithmNo)
         {
-            Console.WriteLine("===============================================================================================================================");
-            Console.WriteLine("Comparing:");
+            Console.WriteLine("=====================================================================================");
+            Console.WriteLine($"Comparing graphs with {distanceFinders[algorithmNo].Name}");
+
+            Console.WriteLine("--> First graph:");
             graph1.Print();
+            Console.WriteLine("--> Second graph:");
             graph2.Print();
-            foreach (var distanceFinder in distanceFinders)
-            {
-                Console.WriteLine("------------------");
-                var result = Run(distanceFinder, graph1, graph2);
-                Console.WriteLine($"{distanceFinder.Name}: {result}");
-            }
+
+            Console.WriteLine("---------------------------------------------------------------------------------");
+            var result = Run(distanceFinders[algorithmNo], graph1, graph2);
+            Console.WriteLine($"{distanceFinders[algorithmNo].Name}: {result}");
+
+            Console.WriteLine("=====================================================================================");
         }
 
         private Result Run(IDistanceFinder distanceFinder, Graph graph1, Graph graph2)
@@ -59,17 +65,17 @@ namespace GraphDistance
 
     internal class Success : Result
     {
-        private TimeSpan Elapsed;
-        private double Distance;
+        private readonly TimeSpan Elapsed;
+        private readonly double Distance;
 
-        public Success(TimeSpan elapsed, double distance)  => (Elapsed, Distance) = (elapsed, distance);
+        public Success(TimeSpan elapsed, double distance) => (Elapsed, Distance) = (elapsed, distance);
 
         public override string ToString() => $"Result={Distance} Elapsed={Elapsed}";
     }
-        
+
     internal class Error : Result
     {
-        private string Message;
+        private readonly string Message;
 
         public Error(string message) => Message = message;
 
@@ -78,7 +84,7 @@ namespace GraphDistance
 
     internal class Timeout : Result
     {
-        private TimeSpan Elapsed;
+        private readonly TimeSpan Elapsed;
 
         public Timeout(TimeSpan elapsed) : base() => Elapsed = elapsed;
         public override string ToString() => $"Result=Timeout After={Elapsed}";

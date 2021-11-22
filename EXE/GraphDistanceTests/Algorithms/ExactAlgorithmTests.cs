@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GraphDistance.Algorithms.Exact;
+using System;
 using System.Collections.Generic;
-using GraphDistance.Algorithms.Exact;
 using Xunit;
 
 namespace GraphDistance.GraphDistanceTests.Algorithms
@@ -127,8 +127,8 @@ namespace GraphDistance.GraphDistanceTests.Algorithms
                 CreateGraphFromMatrix(matrix1),
                 CreateGraphFromMatrix(matrix2));
 
-            var expectedDistance = 1.0 - (double) mcsCount
-                / (double) Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
+            var expectedDistance = 1.0 - mcsCount
+                / (double)Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
 
             Assert.Equal(expectedDistance, distance);
         }
@@ -142,20 +142,20 @@ namespace GraphDistance.GraphDistanceTests.Algorithms
                 CreateGraphFromMatrix(matrix1),
                 CreateGraphFromMatrix(matrix2));
 
-            var expectedDistance = 1.0 - (double) mcsCount
-                / (double) Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
+            var expectedDistance = 1.0 - mcsCount
+                / (double)Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
 
             Assert.Equal(expectedDistance, distance);
         }
 
-        private Graph CreateGraphFromMatrix(int [,] matrix)
+        private Graph CreateGraphFromMatrix(int[,] matrix)
         {
             var bools = new bool[matrix.GetLength(0), matrix.GetLength(1)];
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    bools[i,j] = matrix[i,j] == 0 ? false : true;
+                    bools[i, j] = matrix[i, j] == 0 ? false : true;
                 }
             }
 

@@ -6,8 +6,8 @@ namespace GraphDistance.Algorithms.GreedyVF2
 {
     internal class InOutRandomOrderCandidates : ICandidatesFinder
     {
-        private SubgraphCandidates graph1Candidates, graph2Candidates;
-        private Random random;
+        private readonly SubgraphCandidates graph1Candidates, graph2Candidates;
+        private readonly Random random;
 
         public InOutRandomOrderCandidates(MeasuredGraphs graphs)
         {
@@ -24,7 +24,7 @@ namespace GraphDistance.Algorithms.GreedyVF2
                 (graph1Candidates.InNeighbours, graph2Candidates.InNeighbours),
                 (graph1Candidates.Remaining, graph2Candidates.Remaining),
             };
-            
+
             foreach (var nodesPairsSpace in CandidatesPairOrderedSet)
             {
                 if (nodesPairsSpace.Item1.Count != 0 && nodesPairsSpace.Item2.Count != 0)
@@ -55,7 +55,7 @@ namespace GraphDistance.Algorithms.GreedyVF2
 
     internal class SubgraphCandidates
     {
-        private Graph graph;
+        private readonly Graph graph;
         public HashSet<int> OutNeighbours { get; }
         public HashSet<int> InNeighbours { get; }
         public HashSet<int> Remaining { get; }

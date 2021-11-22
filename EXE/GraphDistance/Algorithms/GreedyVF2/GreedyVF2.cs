@@ -37,9 +37,10 @@ namespace GraphDistance.Algorithms.GreedyVF2
                 }
             }
 
+            Console.WriteLine("--> Result subgraph:");
             graph1.GetInducedSubgraph(maxMapping.Select((t) => t.Item1).ToList()).Print();
 
-            return 1.0 - (double) maxMapping.Count / (double) Math.Max(graph1.Size, graph2.Size);
+            return 1.0 - maxMapping.Count / (double)Math.Max(graph1.Size, graph2.Size);
         }
 
         public string Name { get; }
