@@ -70,6 +70,7 @@ namespace GraphDistance
             }
             catch (Exception e)
             {
+                Console.WriteLine();
                 Console.WriteLine(e.Message);
                 Console.WriteLine();
             }
@@ -119,6 +120,7 @@ namespace GraphDistance
             }
             catch (Exception e)
             {
+                Console.WriteLine();
                 Console.WriteLine(e.Message);
                 Console.WriteLine();
             }
