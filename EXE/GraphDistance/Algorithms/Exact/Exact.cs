@@ -11,9 +11,11 @@ namespace GraphDistance.Algorithms.Exact
         public double FindDistance(Graph graph1, Graph graph2)
         {
             var mcsVertices = GetMCSVertices(graph1, graph2, 0, new());
+
+            Console.WriteLine("--> Result subgraph:");
             graph1.GetInducedSubgraph(mcsVertices).Print();
 
-            return 1.0 - (double) mcsVertices.Count / (double) Math.Max(graph1.Size, graph2.Size);
+            return 1.0 - mcsVertices.Count / (double)Math.Max(graph1.Size, graph2.Size);
         }
 
         private List<int> GetMCSVertices(
@@ -93,12 +95,12 @@ namespace GraphDistance.Algorithms.Exact
         {
             if (length == 1)
             {
-                return list.Select(t => new T[] {t});
+                return list.Select(t => new T[] { t });
             }
 
             return GetPermutations(list, length - 1)
                 .SelectMany(t => list
-                    .Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] {t2}));
+                    .Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
         }
     }
 }

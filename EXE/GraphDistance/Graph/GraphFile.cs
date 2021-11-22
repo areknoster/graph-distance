@@ -7,17 +7,20 @@ namespace GraphDistance
 {
     public static class GraphFile
     {
-        public static Graph Read(string filePath)
+        public static (Graph G1, Graph G2) Read(string filePath)
         {
             ValidateFilePath(filePath);
 
             using (StreamReader file = new(filePath))
             {
-                int size = ReadSize(file);
-                bool[,] adjacencyMatrix = ReadAdjacencyMatrix(file, size);
+                int size1 = ReadSize(file);
+                bool[,] adjacencyMatrix1 = ReadAdjacencyMatrix(file, size1);
+
+                int size2 = ReadSize(file);
+                bool[,] adjacencyMatrix2 = ReadAdjacencyMatrix(file, size2);
 
                 file.Close();
-                return new Graph(size, adjacencyMatrix);
+                return (new Graph(size1, adjacencyMatrix1), new Graph(size2, adjacencyMatrix2));
             }
         }
 
@@ -48,10 +51,16 @@ namespace GraphDistance
 
         private static bool[,] ReadAdjacencyMatrix(StreamReader streamReader, int validSize)
         {
-            string row;
             List<string[]> rows = new();
-            while ((row = streamReader.ReadLine()) != null)
+            for (int i = validSize; i > 0; i--)
             {
+                string row = streamReader.ReadLine();
+
+                if (row == null)
+                {
+                    break;
+                }
+
                 rows.Add(row.Split(" ", StringSplitOptions.RemoveEmptyEntries));
             }
 

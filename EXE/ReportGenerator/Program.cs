@@ -1,12 +1,13 @@
-﻿using System;
-using GraphDistance.Algorithms.Exact;
+﻿using GraphDistance.Algorithms.Exact;
 using GraphDistance.Algorithms.GreedyVF2;
+using System;
+using System.Collections.Generic;
 
 namespace GraphDistance
 {
     internal class Program
     {
-        public static string path = $"../../../../../Examples/";
+        public static string examplesPath = $"../../../../../Examples/";
 
         private static void Main(string[] args)
         {
@@ -17,82 +18,163 @@ namespace GraphDistance
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 10),
                 GreedyVf2.CreateGreedyVf2WithInOutRandomCandidates(attempts: 500));
 
-            ShowMenu(comparer);
-
-            Console.ReadLine();
+            Start(comparer);
         }
 
-        private static void ShowMenu(AlgorithmsComparer comparer)
+        private static void Start(AlgorithmsComparer comparer)
         {
             Console.WriteLine("=================");
             Console.WriteLine("Graph distance");
             Console.WriteLine("=================");
+
+            while (true)
+            {
+                switch (GetMode())
+                {
+                    case "1":
+                        CalculateOwnData(comparer);
+                        break;
+                    case "2":
+                        CalculateExamples(comparer);
+                        break;
+                    case "0":
+                        return;
+                    default:
+                        Console.WriteLine();
+                        Console.WriteLine("Invalid mode selected. Exiting...");
+                        return;
+                }
+            }
+        }
+
+        private static string GetMode()
+        {
             Console.WriteLine("Select mode:");
             Console.WriteLine("1 - your own data");
             Console.WriteLine("2 - example data");
-            var input = Console.ReadLine();
-            if (input == "1")
+            Console.WriteLine("0 - quit application");
+
+            return Console.ReadLine();
+        }
+
+        private static void CalculateOwnData(AlgorithmsComparer comparer)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Type your own data file absolute path:");
+
+            var absolutePath = Console.ReadLine();
+
+            try
             {
-                CalculateOwnData(comparer);
+                ConsiderExample(absolutePath, comparer);
             }
-            else if (input == "2")
+            catch (Exception e)
             {
-                CalculateExamples(comparer);
-            }
-            else
-            {
-                Console.WriteLine("Invalid mode");
+                Console.WriteLine(e.Message);
+                Console.WriteLine();
             }
         }
 
         private static void CalculateExamples(AlgorithmsComparer comparer)
         {
-            var graph_3 = GraphFile.Read(path + "Graph_Size_3.txt");
-            var graph_4 = GraphFile.Read(path + "Graph_Size_4.txt");
-            var graph_5 = GraphFile.Read(path + "Graph_Size_5.txt");
-            var graph_6 = GraphFile.Read(path + "Graph_Size_6.txt");
-            var graph_7 = GraphFile.Read(path + "Graph_Size_7.txt");
-            var graph_9 = GraphFile.Read(path + "Graph_Size_9.txt");
-            var graph_10 = GraphFile.Read(path + "Graph_Size_10.txt");
-            var graph_15 = GraphFile.Read(path + "Graph_Size_15.txt");
-            var graph_35 = GraphFile.Read(path + "Graph_Size_35.txt");
-            var graph_40 = GraphFile.Read(path + "Graph_Size_40.txt");
-
-            comparer.FindDistances(graph_3, graph_3);
-            comparer.FindDistances(graph_3, graph_4);
-            comparer.FindDistances(graph_4, graph_3);
-            comparer.FindDistances(graph_3, graph_6);
-            comparer.FindDistances(graph_6, graph_3);
-            comparer.FindDistances(graph_5, graph_6);
-            comparer.FindDistances(graph_6, graph_5);
-            comparer.FindDistances(graph_3, graph_7);
-            comparer.FindDistances(graph_7, graph_3);
-            comparer.FindDistances(graph_4, graph_7);
-            comparer.FindDistances(graph_7, graph_4);
-            comparer.FindDistances(graph_7, graph_6);
-            comparer.FindDistances(graph_6, graph_7);
-            comparer.FindDistances(graph_9, graph_10);
-            comparer.FindDistances(graph_10, graph_15);
-            comparer.FindDistances(graph_35, graph_40);
-        }
-
-        private static void CalculateOwnData(AlgorithmsComparer comparer)
-        {
-            Console.WriteLine("Type first graph file absolute path:");
-            var absolutePath1 = Console.ReadLine();
-            Console.WriteLine("Type second graph file absolute path:");
-            var absolutePath2 = Console.ReadLine();
+            var examples = new List<string>()
+            {
+                "1. G5_G5_subgraph5_the-same-graphs",
+                "2. G5_G5_subgraph5_the-same-graphs-with-swapped-verticles",
+                "3. G5_G5_subgraph4",
+                "4. G5_G5_subgraph3",
+                "5. G5_G5_subgraph1",
+                "6. G5_G7_two-extra-isolated-v",
+                "7. G8_G5_subgraph5",
+                "8. G8_G5_subgraph5-with-swapped-verticles",
+                "9. G8_G5_subgraph4",
+                "10. C5_C5_both-directed",
+                "11. C5_C6_both-directed",
+                "12. C5_C5_both-undirected",
+                "13. C5_C6_both-undirected",
+                "14. C5_C5_directed-undirected",
+                "15. K5_K5",
+                "16. K5_K6",
+                "17. K5_G5_isolated",
+                "18. G5_G6_both_isolated",
+                "19. G5_G5_with_and_without_loops",
+                "20. G9_G10_random",
+                "21. G10_G15_random",
+                "22. G35_G40_random"
+            };
 
             try
             {
-                var graph_1 = GraphFile.Read(absolutePath1);
-                var graph_2 = GraphFile.Read(absolutePath2);
-                comparer.FindDistances(graph_1, graph_2);
+                int exampleToConsider = GetExampleToConsider(examples.ToArray());
+
+                while (exampleToConsider > 0)
+                {
+                    ConsiderExample(examplesPath + examples[exampleToConsider - 1] + ".txt", comparer);
+                    exampleToConsider = GetExampleToConsider(examples.ToArray());
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("Exiting examples mode...");
+                Console.WriteLine();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.WriteLine();
             }
+        }
+
+        private static void ConsiderExample(string path, AlgorithmsComparer comparer)
+        {
+            var graphs = GraphFile.Read(path);
+            int algorithmNo = GetAlgorithmNo(comparer);
+
+            while (algorithmNo > 0)
+            {
+                Console.WriteLine();
+                comparer.FindDistances(graphs.G1, graphs.G2, algorithmNo - 1);
+                algorithmNo = GetAlgorithmNo(comparer);
+            }
+        }
+
+        private static int GetExampleToConsider(string[] examples)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Select example to consider:");
+            foreach (var example in examples)
+            {
+                Console.WriteLine(example);
+            }
+            Console.WriteLine("0. Exit examples mode");
+
+            bool success = int.TryParse(Console.ReadLine(), out int exampleToConsider);
+            if (!success || exampleToConsider < 0 || exampleToConsider > examples.Length)
+            {
+                Console.WriteLine();
+                throw new Exception("Invalid example selected. Redirecting to menu...");
+            }
+
+            return exampleToConsider;
+        }
+
+        private static int GetAlgorithmNo(AlgorithmsComparer comparer)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Select algorithm:");
+            for (int i = 1; i <= comparer.DistanceFinders.Length; i++)
+            {
+                Console.WriteLine($"{i} - {comparer.DistanceFinders[i - 1]}");
+            }
+            Console.WriteLine("0 - stop considering example");
+
+            bool success = int.TryParse(Console.ReadLine(), out int algorithmNo);
+            if (!success || algorithmNo < 0 || algorithmNo > comparer.DistanceFinders.Length)
+            {
+                Console.WriteLine();
+                throw new Exception("Invalid algorithm selected. Redirecting to menu...");
+            }
+
+            return algorithmNo;
         }
     }
 }
