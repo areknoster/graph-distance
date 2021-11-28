@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphDistance", "GraphDista
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphDistanceTests", "GraphDistanceTests\GraphDistanceTests.csproj", "{913CD5B7-E4CC-40DC-82F8-F91A80C3BF57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyzer", "Analyzer\Analyzer.csproj", "{37639165-3F94-4395-9B3C-0B34CCD933FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1EBA3636-A6E1-4656-9391-F64788C1D12A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EBA3636-A6E1-4656-9391-F64788C1D12A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EBA3636-A6E1-4656-9391-F64788C1D12A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37639165-3F94-4395-9B3C-0B34CCD933FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37639165-3F94-4395-9B3C-0B34CCD933FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37639165-3F94-4395-9B3C-0B34CCD933FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37639165-3F94-4395-9B3C-0B34CCD933FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

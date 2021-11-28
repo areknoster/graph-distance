@@ -45,7 +45,7 @@ namespace GraphDistance
         public bool this[int i, int j]
         {
             get { return values[i, j]; }
-            private set { values[i, j] = value; }
+            set { values[i, j] = value; }
         }
 
         public void SwapNodesLabels(int n1, int n2)
