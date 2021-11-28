@@ -55,7 +55,7 @@ namespace GraphDistance
 
                 sw.Stop();
 
-                return new Success(sw.Elapsed, result.Distance, graph1, graph2, result.Mapping);
+                return new Success(sw.Elapsed, result.Distance, graph1, graph2, result.Mapping.OrderBy(m => m.G1).ToList());
             }
             catch (Exception e)
             {
