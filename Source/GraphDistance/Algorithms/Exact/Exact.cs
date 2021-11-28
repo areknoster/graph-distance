@@ -8,52 +8,64 @@ namespace GraphDistance.Algorithms.Exact
     {
         public string Name => "ExactDistanceFinder";
 
-        public double FindDistance(Graph graph1, Graph graph2)
+        public (double Distance, List<(int G1, int G2)> Mapping) FindDistance(Graph graph1, Graph graph2)
         {
-            var mcsVertices = GetMCSVertices(graph1, graph2, 0, new());
+            var result = GetMCSVertices(graph1, graph2, 0, new(), new());
 
-            Console.WriteLine("--> Result subgraph:");
-            graph1.GetInducedSubgraph(mcsVertices).Print();
+            if (result.G1Vertices.Count != result.G2Vertices.Count)
+            {
+                throw new InvalidOperationException("Invalid exact algorithm result");
+            }
 
-            return 1.0 - mcsVertices.Count / (double)Math.Max(graph1.Size, graph2.Size);
+            var mapping = new List<(int G1, int G2)>();
+            for (int i = 0; i < result.G1Vertices.Count; i++)
+            {
+                mapping.Add((result.G1Vertices[i], result.G2Vertices[i]));
+            }
+
+            return (1.0 - result.G1Vertices.Count / (double)Math.Max(graph1.Size, graph2.Size), mapping);
         }
 
-        private List<int> GetMCSVertices(
+        private (List<int> G1Vertices, List<int> G2Vertices) GetMCSVertices(
             Graph graph1,
             Graph graph2,
-            int index,
-            List<int> consideredVertices)
+            int indexG1,
+            List<int> consideredG1Vertices,
+            List<int> correspondingG2Vertices)
         {
-            if (index == graph1.Size)
+            if (indexG1 == graph1.Size)
             {
-                return consideredVertices.ToList();
+                return (consideredG1Vertices.ToList(), correspondingG2Vertices.ToList());
             }
 
-            var candidateVertices1 = GetMCSVertices(
+            var candidate1 = GetMCSVertices(
                 graph1,
                 graph2,
-                index + 1,
-                consideredVertices);
+                indexG1 + 1,
+                consideredG1Vertices,
+                correspondingG2Vertices);
 
-            consideredVertices.Add(index);
-            var candidateVertices2 = new List<int>();
-            if (IsCommonSubgraph(graph1, graph2, consideredVertices))
+            consideredG1Vertices.Add(indexG1);
+            (List<int> G1Vertices, List<int> G2Vertices) candidate2 = (new List<int>(), new List<int>());
+            var commonSubgraphResult = IsCommonSubgraph(graph1, graph2, consideredG1Vertices);
+            if (commonSubgraphResult.IsCommon)
             {
-                candidateVertices2 = GetMCSVertices(
+                candidate2 = GetMCSVertices(
                     graph1,
                     graph2,
-                    index + 1,
-                    consideredVertices);
+                    indexG1 + 1,
+                    consideredG1Vertices,
+                    commonSubgraphResult.vertices);
             }
 
-            consideredVertices.RemoveAt(consideredVertices.Count - 1);
+            consideredG1Vertices.RemoveAt(consideredG1Vertices.Count - 1);
 
-            return candidateVertices1.Count > candidateVertices2.Count
-                ? candidateVertices1
-                : candidateVertices2;
+            return candidate1.G1Vertices.Count > candidate2.G1Vertices.Count
+                ? (candidate1.G1Vertices, candidate1.G2Vertices)
+                : (candidate2.G1Vertices, candidate2.G2Vertices);
         }
 
-        private bool IsCommonSubgraph(
+        private (bool IsCommon, List<int> vertices) IsCommonSubgraph(
             Graph graph1,
             Graph graph2,
             List<int> graph1Vertices)
@@ -64,11 +76,11 @@ namespace GraphDistance.Algorithms.Exact
                 // Arrays for optimalization
                 if (AreInducedGraphsTheSame(graph1, graph2, graph1Vertices.ToArray(), graph2Vertices.ToArray()))
                 {
-                    return true;
+                    return (true, graph2Vertices.ToList());
                 }
             }
 
-            return false;
+            return (false, new());
         }
 
         private bool AreInducedGraphsTheSame(
