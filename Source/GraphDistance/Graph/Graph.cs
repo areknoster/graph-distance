@@ -14,6 +14,20 @@ namespace GraphDistance
             get { return size; }
         }
 
+        public int DirectedEdges
+        {
+            get
+            {
+                var sum = 0;
+                foreach (var e in AdjacencyMatrix)
+                {
+                    if (e) sum++;
+                }
+
+                return sum;
+            }
+        }
+
         public bool[,] AdjacencyMatrix
         {
             get { return adjacencyMatrix.Values; }
@@ -39,7 +53,7 @@ namespace GraphDistance
             this.size = size;
             this.adjacencyMatrix = new(adjacencyMatrix);
         }
-
+        
         private static void ValidateSize(int size)
         {
             if (size < 0)
@@ -121,6 +135,11 @@ namespace GraphDistance
             {
                 throw new ArgumentException(Errors.Graph.SUBGRAPH_CREATING_NODE_LABELS_NOT_UNIQUE);
             }
+        }
+
+        public Graph Copy()
+        {
+            return GetInducedSubgraph(Enumerable.Range(0,  Size).ToList());
         }
     }
 }

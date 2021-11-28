@@ -8,7 +8,7 @@ namespace GraphDistance.Algorithms.GreedyVF2
         public static GreedyVf2 CreateGreedyVf2WithInOutRandomCandidates(int attempts = 1)
         {
             return new(
-                $"GreedyVf2WithInOutRandomCandidates{attempts}Attempts",
+                $"GVF2_{attempts}",
                 attempts,
                 new InOutRandomOrderCandidatesFactory());
         }
