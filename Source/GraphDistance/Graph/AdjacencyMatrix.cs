@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace GraphDistance
 {
@@ -99,6 +100,45 @@ namespace GraphDistance
 
                 Console.Write("\n");
             }
+        }
+
+        public List<string> GetPrintLines(List<int> indexes)
+        {
+            var indexesCount = indexes.Count;
+            var lines = new List<string>();
+            lines.Add($"Adjacency matrix ({indexesCount}x{indexesCount}) with indexes:");
+
+            int maxIndexLength = indexes.Max().ToString().Length;
+
+            var sb = new StringBuilder();
+            sb.Append(new string(' ', maxIndexLength + 1) + "|");
+            for (int i = 0; i < indexesCount; i++)
+            {
+                sb.Append(string.Format($" {{0,{maxIndexLength}}}", indexes[i]));
+            }
+            lines.Add(sb.ToString());
+            sb.Clear();
+
+            sb.Append(new string(
+                '-', maxIndexLength + 1)
+                + "+"
+                + new string('-', (maxIndexLength + 1) * indexesCount));
+            lines.Add(sb.ToString());
+            sb.Clear();
+
+            for (int i = 0; i < indexesCount; i++)
+            {
+                sb.Append(string.Format($"{{0,{maxIndexLength}}} |", indexes[i]));
+                for (int j = 0; j < indexesCount; j++)
+                {
+                    sb.Append(string.Format($" {{0,{maxIndexLength}}}", Convert.ToInt32(this[indexes[i], indexes[j]])));
+                }
+
+                lines.Add(sb.ToString());
+                sb.Clear();
+            }
+
+            return lines;
         }
     }
 }

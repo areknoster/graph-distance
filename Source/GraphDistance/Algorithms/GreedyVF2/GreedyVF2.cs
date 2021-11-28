@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GraphDistance.Algorithms.GreedyVF2
 {
@@ -24,7 +23,7 @@ namespace GraphDistance.Algorithms.GreedyVF2
             this.Name = name;
         }
 
-        public double FindDistance(Graph graph1, Graph graph2)
+        public (double Distance, List<(int G1, int G2)> Mapping) FindDistance(Graph graph1, Graph graph2)
         {
             var graphs = new MeasuredGraphs(graph1, graph2);
             List<(int, int)> maxMapping = new List<(int, int)>();
@@ -37,10 +36,7 @@ namespace GraphDistance.Algorithms.GreedyVF2
                 }
             }
 
-            Console.WriteLine("--> Result subgraph:");
-            graph1.GetInducedSubgraph(maxMapping.Select((t) => t.Item1).ToList()).Print();
-
-            return 1.0 - maxMapping.Count / (double)Math.Max(graph1.Size, graph2.Size);
+            return (1.0 - maxMapping.Count / (double)Math.Max(graph1.Size, graph2.Size), maxMapping);
         }
 
         public string Name { get; }

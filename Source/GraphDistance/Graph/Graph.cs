@@ -82,6 +82,15 @@ namespace GraphDistance
             adjacencyMatrix.Print();
         }
 
+        public List<string> GetPrintLines(List<int> indexes = null)
+        {
+            if (indexes is null)
+            {
+                indexes = Enumerable.Range(0, Size).ToList();
+            }
+            return adjacencyMatrix.GetPrintLines(indexes);
+        }
+
         public Graph GetInducedSubgraph(List<int> nodes)
         {
             ValidateNodes(nodes, size);

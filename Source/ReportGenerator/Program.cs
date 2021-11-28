@@ -1,6 +1,7 @@
 ﻿using GraphDistance.Algorithms.Exact;
 using GraphDistance.Algorithms.GreedyVF2;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -17,6 +18,7 @@ namespace GraphDistance
 
         private static void Main(string[] args)
         {
+            ConsoleExtensions.SetParams(150, 50);
             Header();
             SetTimeout();
 
@@ -33,9 +35,9 @@ namespace GraphDistance
 
         private static void Header()
         {
-            Console.WriteLine("=================");
+            Console.WriteLine(new string('=', ConsoleExtensions.Width));
             Console.WriteLine("Graph distance");
-            Console.WriteLine("=================");
+            Console.WriteLine(new string('=', ConsoleExtensions.Width));
             Console.WriteLine();
         }
 
@@ -217,6 +219,71 @@ namespace GraphDistance
             Console.Write("Press any key to continue...");
             Console.ReadKey();
             Console.WriteLine();
+        }
+    }
+
+    public static class ConsoleExtensions
+    {
+        public static int Width { get; private set; }
+        public static int Height { get; private set; }
+
+        public static void SetParams(int width, int height)
+        {
+            Width = width;
+            Height = height;
+            Console.WindowHeight = height;
+            Console.WindowWidth = width;
+        }
+
+        public static void PrintColumns(List<string> firstColumnLines, List<string> secondColumnLines, int margin)
+        {
+            var first = GetData(firstColumnLines);
+            var second = GetData(secondColumnLines);
+
+            if (first.Width > Width || second.Width > Width)
+            {
+                Console.WriteLine("Graphs too big to print in console.");
+                return;
+            }
+
+            if (first.Width + second.Width + margin > Width)
+            {
+                foreach (var line in first.Lines)
+                {
+                    Console.WriteLine(line);
+                }
+                foreach (var line in second.Lines)
+                {
+                    Console.WriteLine(line);
+                }
+                return;
+            }
+
+            for (int i = 0; i < first.Lines.Count; i++)
+            {
+                Console.Write(string.Format($" {{0,{-first.Width}}}", first.Lines[i]));
+                Console.Write(new string(' ', margin));
+                if (i < second.Lines.Count)
+                {
+                    Console.Write(second.Lines[i]);
+                }
+                Console.WriteLine();
+            }
+            for (int i = first.Lines.Count; i < second.Lines.Count; i++)
+            {
+                Console.Write(string.Format($" {{0,{-first.Width}}}", string.Empty));
+                Console.Write(new string(' ', margin));
+                if (i < second.Lines.Count)
+                {
+                    Console.Write(second.Lines[i]);
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private static (int Width, int Height, List<string> Lines) GetData(List<string> lines)
+        {
+             return (lines.Max(l => l.Count()), lines.Count, lines);
         }
     }
 }
