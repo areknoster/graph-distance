@@ -162,19 +162,19 @@ namespace GraphDistance.GraphDistanceTests.Algorithms
         {
             var distanceFinder = new ExactDistanceFinder();
 
-            var distance = distanceFinder.FindDistance(
+            var (Distance, Mapping) = distanceFinder.FindDistance(
                 CreateGraphFromMatrix(matrix1),
                 CreateGraphFromMatrix(matrix2));
 
             var expectedDistance = 1.0 - mcsCount
                 / (double)Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
 
-            Assert.Equal(expectedDistance, distance.Distance);
-            Assert.Equal(expectedVertices.Count, distance.Mapping.Count);
+            Assert.Equal(expectedDistance, Distance);
+            Assert.Equal(expectedVertices.Count, Mapping.Count);
             for (int i = 0; i < expectedVertices.Count; i++)
             {
-                Assert.Equal(expectedVertices[i].G1, distance.Mapping[i].G1);
-                Assert.Equal(expectedVertices[i].G2, distance.Mapping[i].G2);
+                Assert.Equal(expectedVertices[i].G1, Mapping[i].G1);
+                Assert.Equal(expectedVertices[i].G2, Mapping[i].G2);
             }
         }
 
@@ -183,30 +183,30 @@ namespace GraphDistance.GraphDistanceTests.Algorithms
         {
             var distanceFinder = new ExactDistanceFinder();
 
-            var distance = distanceFinder.FindDistance(
+            var (Distance, Mapping) = distanceFinder.FindDistance(
                 CreateGraphFromMatrix(matrix1),
                 CreateGraphFromMatrix(matrix2));
 
             var expectedDistance = 1.0 - mcsCount
                 / (double)Math.Max(matrix1.GetLength(0), matrix2.GetLength(0));
 
-            Assert.Equal(expectedDistance, distance.Distance);
-            Assert.Equal(expectedVertices.Count, distance.Mapping.Count);
+            Assert.Equal(expectedDistance, Distance);
+            Assert.Equal(expectedVertices.Count, Mapping.Count);
             for (int i = 0; i < expectedVertices.Count; i++)
             {
-                Assert.Equal(expectedVertices[i].G1, distance.Mapping[i].G1);
-                Assert.Equal(expectedVertices[i].G2, distance.Mapping[i].G2);
+                Assert.Equal(expectedVertices[i].G1, Mapping[i].G1);
+                Assert.Equal(expectedVertices[i].G2, Mapping[i].G2);
             }
         }
 
-        private Graph CreateGraphFromMatrix(int[,] matrix)
+        private static Graph CreateGraphFromMatrix(int[,] matrix)
         {
             var bools = new bool[matrix.GetLength(0), matrix.GetLength(1)];
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    bools[i, j] = matrix[i, j] == 0 ? false : true;
+                    bools[i, j] = (matrix[i, j] != 0);
                 }
             }
 

@@ -10,20 +10,20 @@ namespace GraphDistance.Algorithms.Exact
 
         public (double Distance, List<(int G1, int G2)> Mapping) FindDistance(Graph graph1, Graph graph2)
         {
-            var result = GetMCSVertices(graph1, graph2, 0, new(), new());
+            var (G1Vertices, G2Vertices) = GetMCSVertices(graph1, graph2, 0, new(), new());
 
-            if (result.G1Vertices.Count != result.G2Vertices.Count)
+            if (G1Vertices.Count != G2Vertices.Count)
             {
                 throw new InvalidOperationException("Invalid exact algorithm result");
             }
 
             var mapping = new List<(int G1, int G2)>();
-            for (int i = 0; i < result.G1Vertices.Count; i++)
+            for (int i = 0; i < G1Vertices.Count; i++)
             {
-                mapping.Add((result.G1Vertices[i], result.G2Vertices[i]));
+                mapping.Add((G1Vertices[i], G2Vertices[i]));
             }
 
-            return (1.0 - result.G1Vertices.Count / (double)Math.Max(graph1.Size, graph2.Size), mapping);
+            return (1.0 - G1Vertices.Count / (double)Math.Max(graph1.Size, graph2.Size), mapping);
         }
 
         private (List<int> G1Vertices, List<int> G2Vertices) GetMCSVertices(
@@ -38,7 +38,7 @@ namespace GraphDistance.Algorithms.Exact
                 return (consideredG1Vertices.ToList(), correspondingG2Vertices.ToList());
             }
 
-            var candidate1 = GetMCSVertices(
+            var (G1Vertices, G2Vertices) = GetMCSVertices(
                 graph1,
                 graph2,
                 indexG1 + 1,
@@ -47,25 +47,25 @@ namespace GraphDistance.Algorithms.Exact
 
             consideredG1Vertices.Add(indexG1);
             (List<int> G1Vertices, List<int> G2Vertices) candidate2 = (new List<int>(), new List<int>());
-            var commonSubgraphResult = IsCommonSubgraph(graph1, graph2, consideredG1Vertices);
-            if (commonSubgraphResult.IsCommon)
+            var (IsCommon, vertices) = IsCommonSubgraph(graph1, graph2, consideredG1Vertices);
+            if (IsCommon)
             {
                 candidate2 = GetMCSVertices(
                     graph1,
                     graph2,
                     indexG1 + 1,
                     consideredG1Vertices,
-                    commonSubgraphResult.vertices);
+                    vertices);
             }
 
             consideredG1Vertices.RemoveAt(consideredG1Vertices.Count - 1);
 
-            return candidate1.G1Vertices.Count > candidate2.G1Vertices.Count
-                ? (candidate1.G1Vertices, candidate1.G2Vertices)
+            return G1Vertices.Count > candidate2.G1Vertices.Count
+                ? (G1Vertices, G2Vertices)
                 : (candidate2.G1Vertices, candidate2.G2Vertices);
         }
 
-        private (bool IsCommon, List<int> vertices) IsCommonSubgraph(
+        private static (bool IsCommon, List<int> vertices) IsCommonSubgraph(
             Graph graph1,
             Graph graph2,
             List<int> graph1Vertices)
@@ -83,7 +83,7 @@ namespace GraphDistance.Algorithms.Exact
             return (false, new());
         }
 
-        private bool AreInducedGraphsTheSame(
+        private static bool AreInducedGraphsTheSame(
             Graph graph1,
             Graph graph2,
             int[] graph1Vertices,

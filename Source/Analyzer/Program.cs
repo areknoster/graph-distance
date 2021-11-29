@@ -1,31 +1,31 @@
-﻿using System;
+﻿using GraphDistance;
+using GraphDistance.Algorithms.Exact;
+using GraphDistance.Algorithms.GreedyVF2;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GraphDistance;
-using GraphDistance.Algorithms.Exact;
-using GraphDistance.Algorithms.GreedyVF2;
 
 namespace Analyzer
 {
-    class Program
+    internal class Program
     {
-        
+
         public static TimeSpan timeout = TimeSpan.FromSeconds(30);
 
+        // Comment before running makeEXE.bat
         // public static string ExamplesPath = $"../../../../../Examples/";
         // public static string ResultsPath = $"../../../../../results.csv";
+        // Uncomment before running makeEXE.bat
         public static string ExamplesPath = $"../../Examples/";
         public static string ResultsPath = $"../../results.csv";
+
         public const int Step = 10;
         public const int StepCount = 25;
-        
-        public static List<double> Densities = new (){ 0.5, 1, 1.5, 3, 5, 10};
 
-        // Uncomment before running makeEXE.bat
-        //public static string examplesPath = $"../Examples/";
-        
-        static void Main(string[] args)
+        public static List<double> Densities = new() { 0.5, 1, 1.5, 3, 5, 10 };
+
+        private static void Main(string[] args)
         {
             var analyzer = new Analyzer(timeout, ResultsPath,
                 new ExactDistanceFinder(),
@@ -42,16 +42,16 @@ namespace Analyzer
                 return new Case((new MeasuredGraph(G1), new MeasuredGraph(G2)), desc);
             });
             analyzer.AddRange(cases);
-            
+
             var caseSizes = new List<(int, int)>();
             for (int i = 3; i <= 9; i++)
             {
                 for (int j = 3; j <= i; j++)
                 {
-                    caseSizes.Add((i,j));
+                    caseSizes.Add((i, j));
                 }
             }
-            
+
             foreach (var density in Densities)
             {
                 foreach (var cs in caseSizes)
@@ -61,18 +61,18 @@ namespace Analyzer
                     analyzer.Add(new Case((g1, g2), "random graphs with same density"));
                 }
             }
-            
 
-            
+
+
             caseSizes.AddRange(Enumerable.Range(1, StepCount).Select(v => (v * Step, v * Step)));
-            caseSizes.AddRange(Enumerable.Range(1, StepCount).Select(v => (v * Step, (int) (v * Step * 0.7))));
-            caseSizes.AddRange(Enumerable.Range(1, StepCount).Select(v => (v * Step, (int) (v * Step * 0.3))));
-            
+            caseSizes.AddRange(Enumerable.Range(1, StepCount).Select(v => (v * Step, (int)(v * Step * 0.7))));
+            caseSizes.AddRange(Enumerable.Range(1, StepCount).Select(v => (v * Step, (int)(v * Step * 0.3))));
+
             foreach (var density in Densities)
             {
                 foreach (var cs in caseSizes)
                 {
-                    var g1 = GraphGenerator.Random(cs.Item1 , density);
+                    var g1 = GraphGenerator.Random(cs.Item1, density);
                     var g2 = GraphGenerator.Subgraph(GraphGenerator.Shuffle(g1), cs.Item2);
                     var analyzedCase = new Case((new MeasuredGraph(g1), new MeasuredGraph(g2)), "G2 is shuffled subgraph of G1");
                     analyzer.Add(analyzedCase);

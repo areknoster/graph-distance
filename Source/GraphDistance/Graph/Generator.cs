@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using GraphDistance.Algorithms.GreedyVF2;
 
 namespace GraphDistance
 {
@@ -19,11 +18,11 @@ namespace GraphDistance
 
     public static class GraphGenerator
     {
-        private static Random Rand = new Random();
+        private static readonly Random Rand = new();
 
         public static Graph Random(int size, double density)
         {
-            density = Math.Min(density,  size - 1);
+            density = Math.Min(density, size - 1);
             var g = new Graph(size);
             for (int i = 0; i < density * size;)
             {
