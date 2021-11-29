@@ -12,9 +12,9 @@ namespace GraphDistance
         public static int timeout;
 
         // Comment before running makeEXE.bat
-        public static string examplesPath = $"../../../../../Examples/";
+        //public static string examplesPath = $"../../../../../Examples/";
         // Uncomment before running makeEXE.bat
-        //public static string examplesPath = $"../Examples/";
+        public static string examplesPath = $"../Examples/";
 
         private static void Main(string[] args)
         {
@@ -183,13 +183,13 @@ namespace GraphDistance
 
         private static void ConsiderExample(string path, AlgorithmsComparer comparer)
         {
-            var graphs = GraphFile.Read(path);
+            var (G1, G2) = GraphFile.Read(path);
             int algorithmNo = GetAlgorithmNo(comparer);
 
             while (algorithmNo > 0)
             {
                 Console.WriteLine();
-                comparer.FindDistances(graphs.G1, graphs.G2, algorithmNo - 1);
+                comparer.FindDistances(G1, G2, algorithmNo - 1);
                 algorithmNo = GetAlgorithmNo(comparer);
             }
         }
@@ -283,7 +283,7 @@ namespace GraphDistance
 
         private static (int Width, int Height, List<string> Lines) GetData(List<string> lines)
         {
-             return (lines.Max(l => l.Count()), lines.Count, lines);
+            return (lines.Max(l => l.Length), lines.Count, lines);
         }
     }
 }

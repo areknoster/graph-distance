@@ -105,8 +105,10 @@ namespace GraphDistance
         public List<string> GetPrintLines(List<int> indexes)
         {
             var indexesCount = indexes.Count;
-            var lines = new List<string>();
-            lines.Add($"Adjacency matrix ({indexesCount}x{indexesCount}) with indexes:");
+            var lines = new List<string>
+            {
+                $"Adjacency matrix ({indexesCount}x{indexesCount}) with indexes:"
+            };
 
             int maxIndexLength = indexes.Max().ToString().Length;
 

@@ -84,7 +84,7 @@ namespace GraphDistance.Tests
         [Fact(DisplayName = "Subgraph induced by invalid nodes")]
         public void GetInducedSubgraphTest1()
         {
-            Graph graph = new Graph(validMatrix);
+            Graph graph = new(validMatrix);
             var exception = Assert.Throws<ArgumentException>(
                 () => { var result = graph.GetInducedSubgraph(invalidNodes); });
             Assert.Equal(Errors.Graph.SUBGRAPH_CREATING_INVALID_NODE_LABEL, exception.Message);
@@ -93,7 +93,7 @@ namespace GraphDistance.Tests
         [Fact(DisplayName = "Subgraph induced by nonunique nodes")]
         public void GetInducedSubgraphTest2()
         {
-            Graph graph = new Graph(validMatrix);
+            Graph graph = new(validMatrix);
             var exception = Assert.Throws<ArgumentException>(
                 () => { var result = graph.GetInducedSubgraph(nonuniqueNodes); });
             Assert.Equal(Errors.Graph.SUBGRAPH_CREATING_NODE_LABELS_NOT_UNIQUE, exception.Message);
@@ -102,7 +102,7 @@ namespace GraphDistance.Tests
         [Fact(DisplayName = "Subgraph induced by valid nodes")]
         public void GetInducedSubgraphTest3()
         {
-            Graph graph = new Graph(validMatrix);
+            Graph graph = new(validMatrix);
             var result = graph.GetInducedSubgraph(validNodes);
             Assert.Equal(subGraph.Size, result.Size);
             Assert.Equal(subGraph.AdjacencyMatrix, result.AdjacencyMatrix);

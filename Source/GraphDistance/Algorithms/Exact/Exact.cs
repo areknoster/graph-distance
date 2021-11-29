@@ -83,7 +83,7 @@ namespace GraphDistance.Algorithms.Exact
             return (false, new());
         }
 
-        private bool AreInducedGraphsTheSame(
+        private static bool AreInducedGraphsTheSame(
             Graph graph1,
             Graph graph2,
             int[] graph1Vertices,

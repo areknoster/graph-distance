@@ -73,9 +73,9 @@ namespace GraphDistance
     {
         private readonly TimeSpan Elapsed;
         private readonly double Distance;
-        Graph Graph1;
-        Graph Graph2;
-        List<(int G1, int G2)> Mapping;
+        private readonly Graph Graph1;
+        private readonly Graph Graph2;
+        private readonly List<(int G1, int G2)> Mapping;
 
         public Success(
             TimeSpan elapsed,

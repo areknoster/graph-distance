@@ -1,16 +1,13 @@
+using CsvHelper;
+using GraphDistance;
+using GraphDistance.Algorithms.Exact;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using CsvHelper;
-using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
-using GraphDistance;
-using GraphDistance.Algorithms.Exact;
 
 namespace Analyzer
 {
@@ -31,13 +28,13 @@ namespace Analyzer
             Console.WriteLine($"{Description}: {Graphs.Item1}, {Graphs.Item2}");
         }
     }
-    
+
     internal class Analyzer
     {
-        private TimeSpan Timeout;
-        private List<Case> Cases;
-        private IDistanceFinder[] Algorithms;
-        private string DataFilePath;
+        private readonly TimeSpan Timeout;
+        private readonly List<Case> Cases;
+        private readonly IDistanceFinder[] Algorithms;
+        private readonly string DataFilePath;
 
         public Analyzer(TimeSpan timeout, string dataFilePath, params IDistanceFinder[] algorithms)
         {
@@ -79,7 +76,7 @@ namespace Analyzer
                 {
                     AlgorithmName = distanceFinder.Name,
                     Result = Result.Timeout,
-                    Elapsed =  Timeout,
+                    Elapsed = Timeout,
                     Distance = -1,
                 };
             }
@@ -95,7 +92,7 @@ namespace Analyzer
                     {
                         AlgorithmName = distanceFinder.Name,
                         Result = Result.Timeout,
-                        Elapsed =  Timeout,
+                        Elapsed = Timeout,
                         Distance = -1,
                     };
                 }
@@ -120,7 +117,7 @@ namespace Analyzer
             }
         }
     }
-    
+
     internal struct Measurement
     {
         public Case Case;
@@ -134,7 +131,7 @@ namespace Analyzer
 
         public dynamic ToRecord()
         {
-            var record = new ExpandoObject() as IDictionary<string, Object>;
+            var record = new ExpandoObject() as IDictionary<string, object>;
             record["Description"] = Case.Description;
             AddGraphToRecord(record, Case.Graphs.Item1, "G1");
             AddGraphToRecord(record, Case.Graphs.Item2, "G2");
@@ -147,7 +144,7 @@ namespace Analyzer
             return record;
         }
 
-        private static void AddGraphToRecord(in IDictionary<string, Object> record, MeasuredGraph graph, string prefix)
+        private static void AddGraphToRecord(in IDictionary<string, object> record, MeasuredGraph graph, string prefix)
         {
             record[$"{prefix}_vertices"] = graph.Vertices;
             record[$"{prefix}_edges"] = graph.Edges;
@@ -165,7 +162,7 @@ namespace Analyzer
         {
             this.Graph = graph;
         }
-        public double Density => (double)Edges / (double)Vertices;
+        public double Density => Edges / (double)Vertices;
 
         public override string ToString()
         {
@@ -179,7 +176,7 @@ namespace Analyzer
         Error,
         Success
     }
-    
+
     internal struct AlgorithmRun
     {
         public string AlgorithmName;
@@ -189,11 +186,11 @@ namespace Analyzer
     }
 
 
-    
 
 
 
-    
-    
-    
+
+
+
+
 }

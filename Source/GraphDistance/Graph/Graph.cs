@@ -21,7 +21,10 @@ namespace GraphDistance
                 var sum = 0;
                 foreach (var e in AdjacencyMatrix)
                 {
-                    if (e) sum++;
+                    if (e)
+                    {
+                        sum++;
+                    }
                 }
 
                 return sum;
@@ -53,7 +56,7 @@ namespace GraphDistance
             this.size = size;
             this.adjacencyMatrix = new(adjacencyMatrix);
         }
-        
+
         private static void ValidateSize(int size)
         {
             if (size < 0)
@@ -139,7 +142,7 @@ namespace GraphDistance
 
         public Graph Copy()
         {
-            return GetInducedSubgraph(Enumerable.Range(0,  Size).ToList());
+            return GetInducedSubgraph(Enumerable.Range(0, Size).ToList());
         }
     }
 }

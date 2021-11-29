@@ -26,7 +26,7 @@ namespace GraphDistance.Algorithms.GreedyVF2
         public (double Distance, List<(int G1, int G2)> Mapping) FindDistance(Graph graph1, Graph graph2)
         {
             var graphs = new MeasuredGraphs(graph1, graph2);
-            List<(int, int)> maxMapping = new List<(int, int)>();
+            List<(int, int)> maxMapping = new();
             for (int i = 0; i < attempts; i++)
             {
                 var mapping = GreedyFindMaxMapping(graphs);
